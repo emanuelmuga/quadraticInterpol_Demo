@@ -1,0 +1,88 @@
+#### Quartus Temporary Files ######
+*.rpt
+*.smsg
+*.summary
+*.jdi
+*.done
+*.lock
+
+## Simulation Files:
+/simulation
+*.wlf
+*.log
+*.bak
+*.mpf
+*.mti
+
+## Quartus Project Files:
+# (Quartus workspace file)
+*.qws 
+# (Quartus project file)
+db/
+incremental_db/
+output_files/
+*.qdf
+*.qpf
+*.sld
+*.cdf
+*.qsf 
+
+## Synthesis and Compilation Intermediate Files:
+*.cdf
+*.sld
+*.bak
+*.rdb
+*.rpt
+*.smsg
+*.summary
+*.jdi
+
+
+## Auto-generated Files:
+*.sopcinfo 
+*.qip
+*.ipx 
+
+## Simulation Output:
+*.vho 
+*.vqm 
+
+####################################
+
+############# MATLAB  ##############
+## Temporary Files
+*.asv 
+*.m~
+*.mat
+
+## Generated Files:
+*.p
+*.mex*
+*.slx
+*.sldd
+*.slprj
+#*.prj
+
+#codegen
+/reports
+
+##Logs and Reports:
+#*.html
+printable.html
+*.xml
+*.mldatx
+.matlab*
+.DS_Store
+*.log
+
+*/cache_dir/
+*/fxptmp/
+
+#Dependencies:
+/toolbox/
+
+####################################
+## python ##
+__pycache__/
+.idea/
+venv/
