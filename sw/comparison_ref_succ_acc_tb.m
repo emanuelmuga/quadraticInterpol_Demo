@@ -33,8 +33,8 @@ title(['Interpolation factor: ',num2str(interpFactor)],'Interpreter','latex', Fo
 xl = xlabel('Tiempo $t$, (seg.)','Interpreter','latex'); xl.FontSize = 14;
 yl = ylabel('Amplitud','Interpreter','latex'); yl.FontSize = 14;
 
-error_lineal = immse(spline_interp(1:interpLen), lineal_interp(1:interpLen))
-error_quad_full = immse(spline_interp(1:interpLen), quad_interp_full)
-error_succ_acc = immse(spline_interp(1:interpLen), quad_interp_suacc)
+error_lineal = funcRMSE(spline_interp(1:interpLen), lineal_interp(1:interpLen))
+error_quad_full = funcRMSE(spline_interp(1:interpLen), quad_interp_full)
+error_succ_acc = funcRMSE(spline_interp(1:interpLen), quad_interp_suacc)
 
 

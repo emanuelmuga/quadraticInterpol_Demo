@@ -8,7 +8,6 @@ generate_data
 
 % señal de prueba
 load("data_noise.mat");
-% x = real(h_shift);
 
 % Otros métodos de interpolación
 spline_interp = interp1(t,xn,t2,'spline'); 
@@ -32,6 +31,5 @@ title(['Interpolation factor: ',num2str(interpFactor)],'Interpreter','latex', Fo
 xl = xlabel('Tiempo $t$, (seg.)','Interpreter','latex'); xl.FontSize = 14;
 yl = ylabel('Amplitud','Interpreter','latex'); yl.FontSize = 14;
 
-error_lineal = immse(spline_interp(1:interpLen), lineal_interp(1:interpLen))
-error_quad = immse(spline_interp(1:interpLen), quad_interp)
-
+error_lineal = funcRMSE(spline_interp(1:interpLen), lineal_interp(1:interpLen))
+error_quad = funcRMSE(spline_interp(1:interpLen), quad_interp)

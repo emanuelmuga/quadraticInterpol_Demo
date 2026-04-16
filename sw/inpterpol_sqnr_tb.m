@@ -20,7 +20,7 @@ DT_flt = mytypes_D4('single');
 interpFactor  = 16;
 
 % Test Signal
-generate_data
+% generate_data
 
 % señal de prueba
 load("data_noise.mat");
