@@ -37,7 +37,7 @@ module controlUnit(
 
 	localparam [STATUS_WIDTH-1:0]   S1 = 'd0, 
                                     S2 = 'd1,
-                                    S3 = 'd2, 
+                                    S3 = 'd2,
                                     S4 = 'd3, 
                                     S5 = 'd4, 
                                     S6 = 'd5, 
@@ -48,6 +48,7 @@ module controlUnit(
                                     S11 = 'd10, 
                                     S12 = 'd11, 
                                     S13 = 'd12, 
+                                    S14 = 'd13,
                                     XX  ={STATUS_WIDTH{1'bx}};
 
     // Boolean states
@@ -106,19 +107,21 @@ module controlUnit(
 
             S10: state_next = S11;
 
-            S11: 
+            S11: state_next = S12;
+
+            S12: 
                 begin
                     if(compFactor_flag && !compSignal_flag) 
-                        state_next = S12;    
+                        state_next = S13;    
                     else if(compFactor_flag && compSignal_flag)
-                        state_next = S13;
+                        state_next = S14;
                     else
-                        state_next = S11;              
+                        state_next = S12;              
                 end
 
-            S12: state_next = S6;       
+            S13: state_next = S7;       
 
-            S13:  state_next = S1;            
+            S14:  state_next = S1;            
 
             default: state_next = XX;            
         endcase
@@ -184,64 +187,70 @@ module controlUnit(
 
                 S2: clear_sig <= TRUE;  
 
-                S3: 
+                S3: incAddrMemIn_sig  <= TRUE;
+
+                S4: 
                     begin
                         loadX0_sig <= TRUE;
                         incAddrMemIn_sig  <= TRUE;
                     end
 
-                S4: 
+                S5: 
                     begin 
                         loadX1_sig <= TRUE;
                         incAddrMemIn_sig  <= TRUE;
                     end
 
-                S5: 
+                S6: 
                     begin
                         loadX2_sig <= TRUE;
-                        incAddrMemIn_sig  <= TRUE;
                     end
 
-                S6: loadCoeffs_sig <= TRUE;
+                S7: loadCoeffs_sig <= TRUE;
 
-                S7: 
+                S8: 
                     begin
                         loadP2_sig   <= TRUE;
                         selMulti_sig <= TRUE;
                     end
 
-                S8: loadP1_sig   <= TRUE;
-
-                S9: 
-                    begin
-                        loadGF_sig   <= TRUE;
-                        loadXi2m_sig <= TRUE;
-                        loadXi2nd_sig<= TRUE;
-                        loadC0Q_sig  <= TRUE;
-                        selXi_sig    <= TRUE;
-                        selXi2nd_sig <= TRUE;
-                    end
+                S9: loadP1_sig   <= TRUE;
 
                 S10: 
                     begin
-                        wrEn_sig <= TRUE;
-                        incAddrMemOut_sig <= TRUE;
-                    end
-
-                S11:
-                    begin
-                        selYt_sig <= TRUE;
                         loadGF_sig   <= TRUE;
                         loadXi2m_sig <= TRUE;
                         loadXi2nd_sig<= TRUE;
-                        loadC0Q_sig  <= TRUE;
+                    end
+
+                S11: 
+                    begin
                         wrEn_sig <= TRUE;
+                        incAddrMemOut_sig <= TRUE;
+                        interpCntEn_sig   <= TRUE;
+                    end
+
+                S12:
+                    begin
+                        selYt_sig    <= TRUE;
+                        loadGF_sig   <= TRUE;
+                        loadXi2m_sig <= TRUE;
+                        loadXi2nd_sig<= TRUE;
+                        selXi_sig    <= TRUE;
+                        selXi2nd_sig <= TRUE;
+                        selXi2m_sig  <= TRUE;
+                        wrEn_sig     <= TRUE;
+                        interpCntEn_sig   <= TRUE;
                         incAddrMemOut_sig <= TRUE;
                     end  
 
-                S12: shiftInput_sig <= TRUE;
+                S13: 
+                    begin
+                        incAddrMemIn_sig  <= TRUE;
+                        shiftInput_sig    <= TRUE;
+                    end
 
-                S13: done <= TRUE; 
+                S14: done <= TRUE; 
             endcase
         end
     end

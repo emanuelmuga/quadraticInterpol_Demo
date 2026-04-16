@@ -42,7 +42,7 @@
 */
 
 module intpol2_core #(                     
-    parameter   CONFIG_REG_WIDTH = 'd32,
+    parameter   CONFIG_WIDTH     = 'd32,
     parameter   DATAPATH_WIDTH   = 'd16,
     parameter   MEMIN_DEPTH      = 'd2000,
     parameter   MEMOUT_DEPTH     = 'd64000,
@@ -55,8 +55,8 @@ module intpol2_core #(
     input  wire [DATAPATH_WIDTH-1:0]        dataIn,
     input  wire [ceilLog2(MEMIN_DEPTH)-1:0] signalLen_i,
     input  wire [ceilLog2(MAX_INTERP)-1:0]  interpFactor_i,
-    input  wire [CONFIG_REG_WIDTH-1:0]      invU_i,  
-    input  wire [CONFIG_REG_WIDTH-1:0]      invU2_i, 
+    input  wire [CONFIG_WIDTH-1:0]          invU_i,  
+    input  wire [CONFIG_WIDTH-1:0]          invU2_i, 
     output wire                             wrEn_o,
     output wire [ceilLog2(MEMIN_DEPTH)-1:0] addrMemIn,
     output wire [ceilLog2(MEMOUT_DEPTH)-1:0]addrMemOut,
@@ -106,7 +106,7 @@ assign signalLen_w = signalLen_i - 'd3;
 //##############################################################//
 
 datapath#(
-    .CONFIG_REG_WIDTH  ( CONFIG_REG_WIDTH ),
+    .CONFIG_WIDTH  ( CONFIG_WIDTH ),
     .WORD_LENGTH       ( DATAPATH_WIDTH   )
 )DATA_PATH(
     .clk             ( clk             ),
@@ -146,6 +146,7 @@ controlUnit FSM(
     .compSignal_flag  ( compSignal_flag  ),
     .incAddrMemIn_sig ( incAddrMemIn_sig ),
     .incAddrMemOut_sig( incAddrMemOut_sig),
+    .interpCntEn_sig  ( interpCntEn_sig  ),
     .loadX0_sig       ( loadX0_sig       ),
     .loadX1_sig       ( loadX1_sig       ),
     .loadX2_sig       ( loadX2_sig       ),

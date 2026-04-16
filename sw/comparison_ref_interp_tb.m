@@ -3,33 +3,26 @@ set(0,'DefaultFigureWindowStyle','docked');
 
 % Parametros
 interpFactor = 16;    % factor de interpolacion
-Fs = 2e3;            % Frecuencia de muestreo
-T = 1;               % Tiempo de observacion
 
-% Ejes
-t  = 0:1/Fs:T-1/Fs;  
-N = length(t);
-Fs2 = Fs*interpFactor;
-t2 = 0:(1/Fs2):T-1/Fs2;
-N2 = length(t2);
+generate_data
 
-% % señal de prueba
-load("x_n.mat");
-x = real(h_shift);
+% señal de prueba
+load("data_noise.mat");
+% x = real(h_shift);
 
 % otros métodos de interpolación
-spline_interp = interp1(t,x,t2,'spline'); 
-lineal_interp = interp1(t,x,t2,'linear');
+spline_interp = interp1(t,xn,t2,'spline'); 
+lineal_interp = interp1(t,xn,t2,'linear');
 
 % Algoritmo de interpolación cuadratica al vuelo
-signalLen = numel(x);
+signalLen = numel(xn);
 interpLen = interpFactor*(signalLen-2);
 invU = 1/interpFactor;
 invU2 = (1/interpFactor)^2;
-quad_interp = intpol2_full(x, signalLen, interpFactor, interpLen, invU, invU2);
+quad_interp = intpol2_full(xn, signalLen, interpFactor, interpLen, invU, invU2);
 
 figure
-plot(t, x,'o');
+plot(t, xn,'o');
 hold on
 plot(t2, spline_interp,'-k', t2, lineal_interp,'--b');
 plot(t2(1:interpLen), quad_interp,'.r');

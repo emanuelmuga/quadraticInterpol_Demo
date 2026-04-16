@@ -1,6 +1,6 @@
 module datapath #(
-    parameter CONFIG_REG_WIDTH  = 32,
-    parameter WORD_LENGTH       = 16
+    parameter CONFIG_WIDTH  = 32,
+    parameter WORD_LENGTH   = 16
 )(
     input                                clk, 
     input                                rstn,
@@ -23,8 +23,8 @@ module datapath #(
     input                                loadC0Q_sig,
     input                                selYt_sig,
     input                                loadYt_sig,
-    input  signed [CONFIG_REG_WIDTH-1:0] invU,
-    input  signed [CONFIG_REG_WIDTH-1:0] invU2,
+    input  signed [CONFIG_WIDTH-1:0]     invU,
+    input  signed [CONFIG_WIDTH-1:0]     invU2,
     input  signed [WORD_LENGTH-1:-0]     dataIn,        
     output signed [WORD_LENGTH-1:-0]     dataOut 
 );
@@ -269,7 +269,7 @@ adder3#(
 )u_adder3(
     .a_in    ( xi_align      ),
     .b_in    ( xi2main_align ),
-    .c_in    ( c0Q_reg       ),
+    .c_in    ( c0_reg        ),
     .add_out ( add3_w        )
 );
 
