@@ -10,7 +10,7 @@ generate_data
 load("data_noise.mat");
 % x = real(h_shift);
 
-% otros métodos de interpolación
+% Otros métodos de interpolación
 spline_interp = interp1(t,xn,t2,'spline'); 
 lineal_interp = interp1(t,xn,t2,'linear');
 

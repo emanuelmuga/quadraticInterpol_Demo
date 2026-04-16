@@ -35,21 +35,21 @@ module controlUnit(
     // Symbolic states declaration
     localparam STATUS_WIDTH = ceilLog2(13);    
 
-	localparam [STATUS_WIDTH-1:0]   S1 = 'd0, 
-                                    S2 = 'd1,
-                                    S3 = 'd2,
-                                    S4 = 'd3, 
-                                    S5 = 'd4, 
-                                    S6 = 'd5, 
-                                    S7 = 'd6, 
-                                    S8 = 'd7, 
-                                    S9 = 'd8, 
-                                    S10 = 'd9, 
-                                    S11 = 'd10, 
-                                    S12 = 'd11, 
-                                    S13 = 'd12, 
-                                    S14 = 'd13,
-                                    XX  ={STATUS_WIDTH{1'bx}};
+	localparam [STATUS_WIDTH-1:0]   IDLE = 'd0, 
+                                    S1   = 'd1,
+                                    READ_MEMIN = 'd2,
+                                    S2   = 'd3, 
+                                    S3   = 'd4, 
+                                    S4   = 'd5, 
+                                    S5   = 'd6, 
+                                    S6   = 'd7, 
+                                    S7   = 'd8, 
+                                    S8   = 'd9, 
+                                    S9  = 'd10, 
+                                    S10  = 'd11, 
+                                    S11  = 'd12, 
+                                    S12  = 'd13,
+                                    XX   ={STATUS_WIDTH{1'bx}};
 
     // Boolean states
     localparam TRUE  = 1'b1;
@@ -81,21 +81,25 @@ module controlUnit(
     always @(*) begin
         state_next = XX;
         case(state_reg)
-            S1: 
+            IDLE: 
                 begin
                     if(start) begin     
-                        state_next = S2;              
+                        state_next = S1;              
                     end   
                     else 
-                        state_next = S1;              
+                        state_next = IDLE;              
                 end
-            S2: state_next = S3;              
+            S1: state_next = READ_MEMIN;              
 
-            S3: state_next = S4;   
+            READ_MEMIN: state_next = S2;   
   
-            S4: state_next = S5;              
+            S2: state_next = S3;              
              
-            S5: state_next = S6;  
+            S3: state_next = S4;
+
+            S4: state_next = S5;  
+
+            S5: state_next = S6;             
 
             S6: state_next = S7;             
 
@@ -105,23 +109,19 @@ module controlUnit(
 
             S9: state_next = S10;
 
-            S10: state_next = S11;
-
-            S11: state_next = S12;
-
-            S12: 
+            S10: 
                 begin
                     if(compFactor_flag && !compSignal_flag) 
-                        state_next = S13;    
+                        state_next = S11;    
                     else if(compFactor_flag && compSignal_flag)
-                        state_next = S14;
+                        state_next = S12;
                     else
-                        state_next = S12;              
+                        state_next = S10;              
                 end
 
-            S13: state_next = S7;       
+            S11: state_next = S5;       
 
-            S14:  state_next = S1;            
+            S12:  state_next = IDLE;            
 
             default: state_next = XX;            
         endcase
@@ -183,59 +183,61 @@ module controlUnit(
             done              <= FALSE;
 
             case(state_next)
-                S1: ;              
+                IDLE: ;              
 
-                S2: clear_sig <= TRUE;  
+                S1: clear_sig <= TRUE;  
 
-                S3: incAddrMemIn_sig  <= TRUE;
+                READ_MEMIN: incAddrMemIn_sig  <= TRUE;
 
-                S4: 
+                S2: 
                     begin
                         loadX0_sig <= TRUE;
                         incAddrMemIn_sig  <= TRUE;
                     end
 
-                S5: 
+                S3: 
                     begin 
                         loadX1_sig <= TRUE;
                         incAddrMemIn_sig  <= TRUE;
                     end
 
-                S6: 
+                S4: 
                     begin
                         loadX2_sig <= TRUE;
                     end
 
-                S7: loadCoeffs_sig <= TRUE;
+                S5: loadCoeffs_sig <= TRUE;
 
-                S8: 
+                S6: 
                     begin
                         loadP2_sig   <= TRUE;
                         selMulti_sig <= TRUE;
                     end
 
-                S9: loadP1_sig   <= TRUE;
+                S7: loadP1_sig   <= TRUE;
 
-                S10: 
+                S8: 
                     begin
                         loadGF_sig   <= TRUE;
                         loadXi2m_sig <= TRUE;
                         loadXi2nd_sig<= TRUE;
+                        loadXi_sig   <= TRUE;
                     end
 
-                S11: 
+                S9: 
                     begin
                         wrEn_sig <= TRUE;
                         incAddrMemOut_sig <= TRUE;
                         interpCntEn_sig   <= TRUE;
                     end
 
-                S12:
+                S10:
                     begin
                         selYt_sig    <= TRUE;
                         loadGF_sig   <= TRUE;
                         loadXi2m_sig <= TRUE;
                         loadXi2nd_sig<= TRUE;
+                        loadXi_sig   <= TRUE;
                         selXi_sig    <= TRUE;
                         selXi2nd_sig <= TRUE;
                         selXi2m_sig  <= TRUE;
@@ -244,13 +246,13 @@ module controlUnit(
                         incAddrMemOut_sig <= TRUE;
                     end  
 
-                S13: 
+                S11: 
                     begin
                         incAddrMemIn_sig  <= TRUE;
                         shiftInput_sig    <= TRUE;
                     end
 
-                S14: done <= TRUE; 
+                S12: done <= TRUE; 
             endcase
         end
     end

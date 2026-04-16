@@ -171,35 +171,10 @@ initial begin
     #(`CYCLE);
     wait(done_o);
 
-    // dataTemp = new [interpLen];
-    // $display("%t | TEST - Read Mem 0", $time);
-    // for (idx = 0; idx < interpLen; idx++) begin
-    //     addrMemOut = idx;
-    //     #(`CYCLE);
-    //     dataTemp[idx] = dataOut;
-    //     $display("%t | TEST - Read Mem %0d: %4x", $time, idx, dataTemp[idx]);
-    // end
-
     $writememh({`SAVEPATH, `RESULT_FILE}, MEM_OUT.RAM_Structure);
     
     #(50*`CYCLE);
     $stop;
-
-    // file_name = $sformatf({`SAVEPATH, `RESULT_FILE});
-    // file_handle = $fopen(file_name, "w");
-    // if (file_handle == 0) begin
-    //     $display("ERROR: Cannot open file %s", file_name);
-    //     $stop;
-    // end
-    // $display("[%0t] Opened new file: %s", $time, file_name);
-
-    // dataTemp = new [interpLen];
-    // $display("%t | TEST - Read Mem Out", $time);
-
-    // if (file_handle != 0) begin
-    //     $fclose(file_handle);
-    //     $display("[%0t] Closed file: %s ", $time, file_name);
-    // end
 
 end
 

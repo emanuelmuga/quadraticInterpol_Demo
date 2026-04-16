@@ -5,7 +5,7 @@ clc; clear; close all;
 set(0,'DefaultFigureWindowStyle','docked');
 
 DATA_WIDTH = 16;
-FRAC_BITS = 14;
+FRAC_BITS = 13;
 INT_BITS = DATA_WIDTH-FRAC_BITS;
 file_format = '.dat';
 savePath = './test_data/';
@@ -17,10 +17,10 @@ fxd_type = fi([],1, DATA_WIDTH, FRAC_BITS);
 DT_flt = mytypes_D4('single');
 
 %% Parameters
-interpFactor  = 4;
+interpFactor  = 16;
 
 % Test Signal
-% generate_data
+generate_data
 
 % señal de prueba
 load("data_noise.mat");
@@ -41,7 +41,7 @@ interpLen = (N-5)*interpFactor;
 config_file(signalLen, interpFactor, interpLen, [savePath ,'config.dat'])
 
 % fiTypes = mytypes_D4('fixed');
-% y_fi = intpol2_D4_types(xn_fxd, invX, invX2, interpX, signalLen, interpLen,fiTypes);
+% y_fi = intpol2_D4_types(xn_fxd, invU, invU2, interpFactor, signalLen, interpLen,fiTypes);
 
 %%<======================== Break point here
 result_fxd_hw = funcfile2Vector(DATA_WIDTH, FRAC_BITS, [savePath,result_file_name]);
@@ -58,13 +58,9 @@ hold on;
 plot(t2(1:interpLen), y_flt(1:interpLen), '-sqk', t2(1:interpLen), y_fxd_hw,'*--');
 legend('data points','sw','hw')
 xlim([0 T/interpFactor]);
-title(['Quadrature; Interpolation factor: ',num2str(interpFactor)])
+title(['Interpolation factor: ',num2str(interpFactor)],'Interpreter','latex')
 
-diff = y_flt(1:interpLen) - y_fxd_hw;
 
-figure
-stem(diff)
-
-%% SQNR
+% SQNR
 sqnr = SQNR_eval(y_flt(1:interpLen), y_fxd_hw)
 

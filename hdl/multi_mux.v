@@ -11,8 +11,7 @@ module multi_mux#(
     input       signed [WL_B-1:0   ] b1_in,
     input       signed [WL_A-1:0   ] a2_in,
     input       signed [WL_B-1:0   ] b2_in,
-    output wire signed [WL_OUT-1:0] multi_out1,
-    output wire signed [WL_OUT-1:0] multi_out2
+    output wire signed [WL_OUT-1:0] multi_out
 );
 
 localparam MULT_WL  = WL_A + WL_B;
@@ -31,7 +30,6 @@ assign B_mux = selector ? b2_in : b1_in;
 
 assign multi = A_mux * B_mux;
 
-assign multi_out1 = multi >>> SHIFT;
-assign multi_out2 = multi >>> SHIFT;
+assign multi_out = multi >>> SHIFT;
 
 endmodule

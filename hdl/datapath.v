@@ -49,9 +49,8 @@ wire [WL_M-1:0] c1_reg;
 wire [WL_M-1:0] c2_w;
 wire [WL_M-1:0] c2_reg;
 
-wire [WL_P-1:0] p1_w;
+wire [WL_P-1:0] prod_w;
 wire [WL_P-1:0] p1_reg;
-wire [WL_P-1:0] p2_w;
 wire [WL_P-1:0] p2_reg;
 
 wire [WL_P-1:0] xi_reg;
@@ -69,7 +68,7 @@ wire [WL_M-1:0] add3_w;
 
 wire [WL_M-1:0] yt_w;
 
-assign GF_w = p2_w <<< 1;
+assign GF_w = p2_reg <<< 1;
 
 
 input_register#(
@@ -163,8 +162,7 @@ multi_mux#(
     .b1_in      ( invU        ),
     .a2_in      ( c2_reg      ),
     .b2_in      ( invU2       ),
-    .multi_out1 ( p1_w        ),
-    .multi_out2 ( p2_w        )
+    .multi_out  ( prod_w      )
 );
 
 // Basicblock
@@ -189,7 +187,7 @@ register #(
     .rstn    (rstn          ),
     .clrh    (1'b0          ),   
     .enh     (loadP1_sig    ),
-    .data_i  (p1_w          ),
+    .data_i  (prod_w       ),
     .data_o  (p1_reg        )
 );
 
@@ -200,7 +198,7 @@ register #(
     .rstn    (rstn          ),
     .clrh    (1'b0          ),   
     .enh     (loadP2_sig    ),
-    .data_i  (p2_w          ),
+    .data_i  (prod_w        ),
     .data_o  (p2_reg        )
 );
 
@@ -212,7 +210,7 @@ accumulator#(
     .enable   ( enable    ),
     .selector ( selXi_sig ),
     .load     ( loadXi_sig),
-    .a_in     ( p1_w      ),
+    .a_in     ( p1_reg    ),
     .b_in     ( p1_reg    ),
     .acc_out  ( xi_reg    )
 );
@@ -225,7 +223,7 @@ accumulator#(
     .enable   ( enable       ),
     .selector ( selXi2nd_sig ),
     .load     ( loadXi2nd_sig),
-    .a_in     ( p2_w         ),
+    .a_in     ( p2_reg       ),
     .b_in     ( GF_reg       ),
     .acc_out  ( xi2nd_reg    )
 );
@@ -238,7 +236,7 @@ accumulator#(
     .enable   ( enable       ),
     .selector ( selXi2m_sig  ),
     .load     ( loadXi2m_sig ),
-    .a_in     ( p2_w         ),
+    .a_in     ( p2_reg       ),
     .b_in     ( xi2nd_reg    ),
     .acc_out  ( xi2main_reg  )
 );
